@@ -6,11 +6,10 @@ class Database {
   private logger;
 
   constructor() {
-    // Replace database value in the .env file with your database config url
     this.DATABASE =
       process.env.NODE_ENV === 'test'
         ? process.env.DATABASE_TEST
-        : process.env.DATABASE;
+        : process.env.DATABASE_URI;
 
     this.logger = Logger.logger;
   }
@@ -29,4 +28,5 @@ class Database {
     }
   };
 }
+console.log(Database);
 export default Database;
