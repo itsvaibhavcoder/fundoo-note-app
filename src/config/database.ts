@@ -29,5 +29,4 @@ class Database {
     }
   };
 }
-console.log(Database);
 export default Database;
