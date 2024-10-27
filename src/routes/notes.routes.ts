@@ -56,7 +56,7 @@ class NoteRoutes {
         )
 
         this.router.put(
-           '/isArchive/:id', //isTrash should not be true
+           '/isArchive/:id',
            userAuth,
            this.NoteValidater.validateIdMiddleware,
            this.NoteController.isArchive
@@ -68,11 +68,17 @@ class NoteRoutes {
             this.NoteValidater.validateIdMiddleware,
             this.NoteController.isTrash
         )
+
+        this.router.put(
+            '/color/:id',
+            userAuth,
+            this.NoteValidater.validateIdMiddleware,
+            this.NoteController.changeColor
+        )
     }
-    
     public getRoutes = (): Router => {
         return this.router;
-    };
+   };
 }
 
 export default NoteRoutes;

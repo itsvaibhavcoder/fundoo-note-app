@@ -136,9 +136,10 @@ class NoteController {
   ): Promise<void> => {
     try {
       const note = await this.NoteService.toggleArchiveStatus(req.params.id);
+      console.log(req.params.id);
       if (note) {
         res.status(HttpStatus.OK).json({
-          message: note.isArchived
+          message: note.isArchive
             ? 'Note is Archived 🫡'
             : 'Note is Unarchived 🗑️'
         });
@@ -176,6 +177,31 @@ class NoteController {
       next(error);
     }
   };
+
+  public changeColor = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const { color } = req.body;
+      const note = await this.NoteService.changeColor(req.params.id, color)
+      if (note) {
+        res.status(HttpStatus.OK).json({
+          message: `Note color changed to ${note.color} 🎨`
+        });
+      } 
+      else {
+        res.status(HttpStatus.NOT_FOUND).json({
+          message: 'Note not found'
+        });
+      }
+    } 
+    catch (error) {
+      next(error);
+    }
+  };
+  
 }
 
 export default NoteController;
