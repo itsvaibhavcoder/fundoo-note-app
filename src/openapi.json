@@ -1,0 +1,492 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "fundoo-note-app",
+    "description": "API documentation for my Express project"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Fundoo notes using express CLI",
+      "description": "This is the replica of Google note keep"
+    }
+  ],
+  "paths": {
+    "/getmsg": {
+      "get": {
+        "summary": "Welcome endpoint",
+        "responses": {
+          "200": {
+            "description": "Returns a welcome message",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": "Welcome"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/signup": {
+      "post": {
+        "tags": ["User Part"],
+        "description": "Sign up a new user",
+        "requestBody": {
+          "description": "Register user",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/signup"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "User Registered",
+            "content": {}
+          },
+          "400": {
+            "description": "User already exists",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "Register new User"
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["Users Part"],
+        "description": "Sign in a user",
+        "requestBody": {
+          "description": "User login",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/login"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "User logged In",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid Email or Password.",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "login user"
+      }
+    },
+    "/users/forget-password": {
+      "post": {
+        "tags": ["User Part"],
+        "summary": "Forget password",
+        "requestBody": {
+          "description": "Forget Password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForgetPassword"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "reset password link sent sucessfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid Email",
+            "content": {}
+          },
+          "500": {
+            "description": "could not send mail",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "Forget Password"
+      }
+    },
+    "/users/reset-password": {
+      "post": {
+        "tags": ["User"],
+        "summary": "reset password for User",
+        "requestBody": {
+          "description": "new password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPassword"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successful",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid token or Password",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "x-codegen-request-body-name": "New password"
+      }
+    },
+    "/notes": {
+      "get": {
+        "tags": ["Notes Part"],
+        "summary": "Get all Notes",
+        "responses": {
+          "200": {
+            "description": "notes fetched successfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Unauthorized user",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Notes part"],
+        "summary": "Create a note for User",
+        "requestBody": {
+          "description": "create note",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Note"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "201": {
+            "description": "note created succesfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Invalid credentials",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-codegen-request-body-name": "create note"
+      }
+    },
+    "/notes/{_id}": {
+      "get": {
+        "tags": ["Notes part"],
+        "summary": "Get a single note by it's id",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID of the note to retrieve"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "note fetched successfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Unauthorized user",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      },
+      "put": {
+        "tags": ["Notes Part"],
+        "summary": "Update a note for User",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "update note",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Note"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "202": {
+            "description": "Note updated succesfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Unauthorized user",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "x-codegen-request-body-name": "update note"
+      },
+      "delete": {
+        "tags": ["Notes part"],
+        "summary": "Delete a note",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Note deleted succesfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Unauthorized user",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/notes/isArchived/{_id}": {
+      "post": {
+        "tags": ["Notes part"],
+        "summary": "Archieve a note for User",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Note archieved succesfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Unauthorized user",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/notes/isTrashed/{_id}": {
+      "post": {
+        "tags": ["Notes Part"],
+        "summary": "Send a note to trash",
+        "parameters": [
+          {
+            "name": "_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Note sent to trash succesfully",
+            "content": {}
+          },
+          "400": {
+            "description": "Unauthorized user",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "ForgetPassword": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "ResetPassword": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "resetToken": {
+            "type": "string"
+          }
+        }
+      },
+      "Note": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "isTrash": {
+            "type": "boolean"
+          },
+          "UserID": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    }
+  },
+  "x-original-swagger-version": "2.0"
+}

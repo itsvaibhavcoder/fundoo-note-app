@@ -7,7 +7,10 @@ import routes from './routes';
 import Database from './config/database';
 import ErrorHandler from './middlewares/error.middleware';
 import Logger from './config/logger';
+import logStream from './config/logger'
 import morgan from 'morgan';
+import swaggerUi from "swagger-ui-express";
+import swaggerDocument from './openapi.json';
 
 class App{
   public app: Application;
@@ -44,6 +47,7 @@ class App{
     this.db.initializeDatabase();
   }
   public initializeRoutes(): void {
+    this.app.use(`/api/${this.api_version}/api-docs`, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     this.app.use(`/api/${this.api_version}`, routes());
   }
   public initializeErrorHandlers(): void {
@@ -57,6 +61,10 @@ class App{
         `Server started at ${this.host}:${this.port}/api/${this.api_version}/`
       );
     });
+ }
+
+ public getApp(): Application{
+  return this.app;
  }
 }
 

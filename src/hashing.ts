@@ -8,7 +8,8 @@ class hashingFunction {
             const hash = await bcrypt.hash(req.body.password, saltrounds);
             req.body.password = hash;
             next(); 
-        } catch (error) {
+        } 
+        catch (error) {
             next(error);
         }
     };

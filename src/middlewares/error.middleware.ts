@@ -20,6 +20,7 @@ class ErrorMiddleware {
    * @param {Object} res
    */
   public notFound = (req: Request, res: Response): void => {
+   this.logger.warn(`404 - Not Found - ${req.originalUrl} - ${req.method} - ${req.ip}`);
     res.status(HttpStatus.NOT_FOUND).json({
       code: HttpStatus.NOT_FOUND,
       message: 'Ooops, route not found'
