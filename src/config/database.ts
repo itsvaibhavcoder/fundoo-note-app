@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import Logger from './logger';
-
 class Database {
   private DATABASE: string;
   private logger;
@@ -16,6 +15,7 @@ class Database {
 
   public initializeDatabase = async (): Promise<void> => {
     try {
+
       await mongoose.connect(this.DATABASE, {
         useFindAndModify: false,
         useCreateIndex: true,
@@ -23,7 +23,8 @@ class Database {
         useUnifiedTopology: true
       });
       this.logger.info('Connected to the database.');
-    } catch (error) {
+    } 
+    catch (error) {
       this.logger.error('Could not connect to the database.', error);
     }
   };
