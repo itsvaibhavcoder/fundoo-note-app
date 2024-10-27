@@ -2,6 +2,7 @@ import Joi from '@hapi/joi';
 import { Request, Response, NextFunction } from 'express';
 
 class UserValidator {
+  
   public signUpValidate = (req: Request, res: Response, next: NextFunction): void => {
     const schema = Joi.object({
       firstName: Joi.string().min(4).pattern(/^[A-Za-z]+$/).required(),

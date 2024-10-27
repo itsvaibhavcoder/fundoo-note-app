@@ -14,11 +14,11 @@ class NoteService {
     return note;
   };
 
-  // Get all notes
-  public getAll = async (UserId: String): Promise<INote[]> => {
+  //Get all notes
+  public getAll = async (UserID: String): Promise<INote[]> => {
     try {
-      console.log('UserID --->', UserId);
-      return await Note.find({ UserId }).exec();
+      console.log('UserID --->', UserID);
+      return await Note.find({ UserID }).exec();
     } catch (error) {
       console.error('Error fetching notes:', error);
       throw error;
@@ -42,15 +42,15 @@ class NoteService {
     const delete_Count = (await Note.deleteOne({ _id: id })).deletedCount;
     return delete_Count > 0;
   };
-
   public toggleArchiveStatus = async (id: string): Promise<INote | null> => {
+    console.log(id);
     const note = await Note.findById(id).exec();
     console.log("Note ---> ", note);
     if (note) {
       if (note.isTrash) {
         throw new Error("Cannot archive a note that is in the trash.");
       }
-      note.isArchived = !note.isArchived;
+      note.isArchive = !note.isArchive;
       await note.save();
     }
     return note;
@@ -61,6 +61,15 @@ class NoteService {
     if (note) {
       note.isTrash = !note.isTrash;
       await note.save();
+    }
+    return note;
+  };
+
+  public changeColor = async (id: string, newColor: string): Promise<INote | null> => {
+    const note = await Note.findById(id).exec();
+    if (note) {
+      note.color = newColor;
+      await note.save(); 
     }
     return note;
   };

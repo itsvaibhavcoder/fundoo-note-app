@@ -23,7 +23,8 @@ class Database {
         useUnifiedTopology: true
       });
       this.logger.info('Connected to the database.');
-    } catch (error) {
+    } 
+    catch (error) {
       this.logger.error('Could not connect to the database.', error);
     }
   };

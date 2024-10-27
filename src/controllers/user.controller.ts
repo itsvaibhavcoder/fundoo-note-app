@@ -2,7 +2,7 @@ import HttpStatus from 'http-status-codes';
 import UserService from '../services/user.service';
 import { generateToken} from '../utils/tokenUtils';
 import { Request, Response, NextFunction } from 'express';
-
+import redisClient from '../config/redisClient';
 class UserController {
   private userService = new UserService();
 
@@ -34,6 +34,9 @@ class UserController {
           email: user.email
         });
         const { firstName, email, ...rest_data } = user.toObject();
+
+        //Cache the user data in redis
+        await redisClient.set(email, JSON.stringify({firstName, email, generatedToken}), {EX: 60*60})
         res.status(HttpStatus.OK).json({
           code: HttpStatus.OK,
           data: {
